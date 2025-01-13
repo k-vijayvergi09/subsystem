@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/subscription_logger_viewmodel.dart';
+import 'subscription_list_screen.dart';
 
 class SubscriptionLoggerScreen extends StatelessWidget {
   const SubscriptionLoggerScreen({super.key});
@@ -124,6 +125,18 @@ class _SubscriptionLoggerView extends StatelessWidget {
                   padding: EdgeInsets.all(16.0),
                   child: Text('Save Subscription'),
                 ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SubscriptionListScreen(),
+                    ),
+                  );
+                },
+                child: const Text('Show Subscription List'),
               ),
             ],
           ),

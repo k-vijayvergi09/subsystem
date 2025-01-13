@@ -11,11 +11,11 @@ class CreateSubscriptionUseCase {
     try {
       dev.log('CreateSubscriptionUseCase: Starting execution');
       
-      final result = await repository.createSubscription(subscription);
+      await repository.addSubscription(subscription);
       
-      dev.log('CreateSubscriptionUseCase: Database insert result: $result');
+      dev.log('CreateSubscriptionUseCase: Database insert completed');
       
-      return result > 0;
+      return true;
     } catch (e, stackTrace) {
       dev.log(
         'CreateSubscriptionUseCase: Error during execution',

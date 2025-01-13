@@ -4,6 +4,7 @@ import 'dart:developer' as dev;
 
 import '../../data/repository/subscription_repository_impl.dart';
 import '../../domain/entities/subscription.dart';
+import '../../data/datasources/local/database_helper.dart';
 
 class SubscriptionLoggerViewModel extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
@@ -13,7 +14,7 @@ class SubscriptionLoggerViewModel extends ChangeNotifier {
   DateTime _startDate = DateTime.now();
   String _selectedPeriod = 'Monthly';
   bool _autoRenewal = true;
-  final CreateSubscriptionUseCase _createSubscriptionUseCase = CreateSubscriptionUseCase(SubscriptionRepositoryImpl());
+  final CreateSubscriptionUseCase _createSubscriptionUseCase = CreateSubscriptionUseCase(SubscriptionRepositoryImpl(DatabaseHelper.instance));
 
   final List<String> subscriptionPeriods = [
     'Monthly',

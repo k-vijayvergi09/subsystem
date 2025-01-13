@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'data/datasources/local/database_helper.dart';
 import 'presentation/screens/subscription_logger_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseHelper.instance.initDatabase();
   runApp(const MyApp());
 }
 
