@@ -1,9 +1,9 @@
 import '../entities/subscription.dart';
-import '../../data/repository/subscription_repository_impl.dart';
 import 'dart:developer' as dev;
+import '../repositories/subscription_repository.dart';
 
 class CreateSubscriptionUseCase {
-  final SubscriptionRepositoryImpl repository;
+  final SubscriptionRepository repository;
 
   CreateSubscriptionUseCase(this.repository);
 

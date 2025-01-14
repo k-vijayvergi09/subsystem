@@ -1,8 +1,9 @@
+import '../../domain/repositories/subscription_repository.dart';
 import '../../domain/entities/subscription.dart';
 import '../datasources/local/database_helper.dart';
 import '../models/subscription_model.dart';
 
-class SubscriptionRepositoryImpl {
+class SubscriptionRepositoryImpl implements SubscriptionRepository {
   final DatabaseHelper _databaseHelper;
 
   SubscriptionRepositoryImpl(this._databaseHelper);
