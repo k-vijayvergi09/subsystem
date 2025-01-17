@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/extensions/navigator_extension.dart';
 import '../viewmodels/subscription_logger_viewmodel.dart';
-import 'subscription_list_screen.dart';
+import '../widgets/logger_field.dart';
+import '../../core/utils/form_validator.dart';
 
 class SubscriptionLoggerScreen extends StatelessWidget {
   const SubscriptionLoggerScreen({super.key});
@@ -33,41 +35,28 @@ class _SubscriptionLoggerView extends StatelessWidget {
           key: viewModel.formKey,
           child: ListView(
             children: [
-              TextFormField(
+              LoggerField(
                 controller: viewModel.appNameController,
-                decoration: const InputDecoration(
-                  labelText: 'App/Service Name',
-                  border: OutlineInputBorder(),
+                labelText: 'App/Service Name',
+                validator: (value) => FormValidator.validateRequired(
+                  value,
+                  'App/Service Name'
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter app name';
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 16),
-              TextFormField(
+              LoggerField(
                 controller: viewModel.amountController,
-                decoration: const InputDecoration(
-                  labelText: 'Subscription Amount',
-                  border: OutlineInputBorder(),
-                  prefixText: '\$',
-                ),
+                labelText: 'Subscription Amount',
+                prefixText: '₹',
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter amount';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  return null;
-                },
+                validator: (value) => FormValidator.validateNumber(
+                  value,
+                  'Subscription Amount'
+                ),
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: viewModel.selectedPeriod,
+                value: viewModel.data!["period"],
                 decoration: const InputDecoration(
                   labelText: 'Subscription Period',
                   border: OutlineInputBorder(),
@@ -80,25 +69,25 @@ class _SubscriptionLoggerView extends StatelessWidget {
                 }).toList(),
                 onChanged: (String? newValue) {
                   if (newValue != null) {
-                    viewModel.updateSelectedPeriod(newValue);
+                    viewModel.updateField("period", newValue);
                   }
                 },
               ),
               const SizedBox(height: 16),
               ListTile(
                 title: const Text('Start Date'),
-                subtitle: Text(viewModel.startDate.toString().split(' ')[0]),
+                subtitle: Text(viewModel.data!["startDate"].toString().split(' ')[0]),
                 trailing: IconButton(
                   icon: const Icon(Icons.calendar_today),
                   onPressed: () async {
                     final DateTime? picked = await showDatePicker(
                       context: context,
-                      initialDate: viewModel.startDate,
+                      initialDate: viewModel.data!["startDate"],
                       firstDate: DateTime(2000),
                       lastDate: DateTime(2100),
                     );
                     if (picked != null) {
-                      viewModel.updateStartDate(picked);
+                      viewModel.updateField("startDate", picked);
                     }
                   },
                 ),
@@ -106,8 +95,10 @@ class _SubscriptionLoggerView extends StatelessWidget {
               const SizedBox(height: 16),
               SwitchListTile(
                 title: const Text('Auto Renewal'),
-                value: viewModel.autoRenewal,
-                onChanged: viewModel.updateAutoRenewal,
+                value: viewModel.data!["autoRenewal"],
+                onChanged: (value) {
+                  viewModel.updateField("autoRenewal", value);
+                }
               ),
               const SizedBox(height: 24),
               ElevatedButton(
@@ -128,14 +119,7 @@ class _SubscriptionLoggerView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SubscriptionListScreen(),
-                    ),
-                  );
-                },
+                onPressed: () => Navigator.of(context).navigateTo(AppRoute.subscriptionList),
                 child: const Text('Show Subscription List'),
               ),
             ],

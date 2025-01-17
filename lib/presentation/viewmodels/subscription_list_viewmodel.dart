@@ -17,4 +17,4 @@ class SubscriptionListViewModel extends BaseChangeNotifier<List<Subscription>, S
       error = e.toString();
     }
   }
-} 
+}

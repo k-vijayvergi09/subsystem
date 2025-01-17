@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:subsystem/presentation/screens/my_subscription_screen.dart';
 import 'data/datasources/local/database_helper.dart';
 import 'presentation/screens/subscription_logger_screen.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SubscriptionLoggerScreen(),
+      home: const MySubscriptionScreen(),
     );
   }
 }

@@ -41,11 +41,15 @@ class SubscriptionListScreen extends StatelessWidget {
               itemCount: subscriptions.length,
               itemBuilder: (context, index) {
                 final subscription = subscriptions[index];
+                // Calculate months active
+                final monthsActive = DateTime.now().difference(subscription.startDate).inDays ~/ 30;
+                
                 return ListTile(
                   title: Text(subscription.appName),
                   subtitle: Text(
-                    'Amount: \$${subscription.amount.toStringAsFixed(2)}\n'
-                    'Period: ${subscription.period}'
+                    'Amount: ₹${subscription.amount.toStringAsFixed(2)}\n'
+                    'Period: ${subscription.period}\n'
+                    'Active since ${monthsActive == 0 ? 'Less than a month' : '$monthsActive ${monthsActive == 1 ? 'month' : 'months'}'}'
                   ),
                   trailing: Text(
                     subscription.autoRenewal ? 'Auto-renewal' : 'Manual renewal'
