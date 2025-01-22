@@ -14,59 +14,62 @@ class SubscriptionCard extends StatelessWidget {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
-        child: Row(
+      child: Row(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.asset(
                 'assets/images/${subscription.appName.toLowerCase()}_icon.png',
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
+                width: 50,
+                height: 50,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    width: 80,
-                    height: 80,
+                    width: 50,
+                    height: 50,
                     color: Colors.grey[200],
-                    child: const Icon(Icons.subscriptions),
+                    child: const Icon(Icons.subscriptions, size: 24),
                   );
                 },
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 8),
             Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     subscription.appName,
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleSmall,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Text(
                     '₹${subscription.amount.toStringAsFixed(2)} / ${subscription.period}',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
-                  const Spacer(),
+                  const SizedBox(height: 2),
                   Row(
                     children: [
                       Icon(
                         subscription.autoRenewal 
                             ? Icons.autorenew 
                             : Icons.update,
-                        size: 16,
+                        size: 14,
                         color: Colors.grey,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         subscription.autoRenewal ? 'Auto-renewal' : 'Manual',
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 10,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
@@ -75,7 +78,7 @@ class SubscriptionCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
+        ),
     );
   }
 } 

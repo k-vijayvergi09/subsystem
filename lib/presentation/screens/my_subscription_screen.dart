@@ -19,7 +19,7 @@ class MySubscriptionScreen extends StatelessWidget {
         GetSubscriptionListUseCase(
           SubscriptionRepositoryImpl(
             DatabaseHelper.instance
-            )))..loadSubscriptions(),
+          )))..loadSubscriptions(),
       child: const _MySubscriptionView(),
     );
   }
@@ -70,30 +70,42 @@ class _MySubscriptionView extends StatelessWidget {
             return const Center(child: Text('No subscriptions found'));
           }
 
-          return Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(16),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.5,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final availableHeight = constraints.maxHeight - 48;
+              return Column(
+                children: [
+                  SizedBox(
+                    height: availableHeight * 0.30,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      padding: const EdgeInsets.all(5),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        childAspectRatio: 4.0,
+                        crossAxisSpacing: 2,
+                        mainAxisSpacing: 2,
+                      ),
+                      itemCount: subscriptions.length,
+                      itemBuilder: (context, index) {
+                        final subscription = subscriptions[index];
+                        return SubscriptionCard(subscription: subscription);
+                      },
+                    ),
                   ),
-                  itemCount: subscriptions.length,
-                  itemBuilder: (context, index) {
-                    final subscription = subscriptions[index];
-                    return SubscriptionCard(subscription: subscription);
-                  },
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: SubscriptionCalendarView(subscriptions: subscriptions),
-              ),
-            ],
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    height: availableHeight * 0.65,
+                    child: SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      child: SubscriptionCalendarView(subscriptions: subscriptions),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+              );
+            },
           );
         },
       ),
